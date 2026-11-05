@@ -1,0 +1,10 @@
+{
+  "name": "nortex-tambo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24 <25" },
+  "scripts": {
+    "test": "node scripts/check.mjs && node --test test-ai.mjs test-core.mjs test-geometry.mjs test-profile.mjs test-seed.mjs test-tree.mjs"
+  }
+}

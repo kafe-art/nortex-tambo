@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {geometry,validatePolygon,contains} from './dist/geometry.js';
+const rect=[[-80.3,-4.9],[-80.299,-4.9],[-80.299,-4.899],[-80.3,-4.899]];
+assert.equal(validatePolygon(rect),null);
+const g=geometry(rect);assert(g.hectares>1.2&&g.hectares<1.3);assert(g.perimeter_m>440&&g.perimeter_m<446);
+assert(contains(rect,[g.reference.lon,g.reference.lat]));
+assert.equal(g.geojson.coordinates[0].length,5);
+assert(validatePolygon(rect.slice(0,2)));
+assert(validatePolygon([rect[0],rect[2],rect[1],rect[3]]));
+assert(validatePolygon([rect[0],rect[0],rect[1]]));
+assert(validatePolygon([[-81,-5],[-81,-4],[-80,-4]]));
+assert(validatePolygon([[-80.3,-4.9],[-80.299,-4.9],[-80.298,-4.9]]));
+assert.equal(validatePolygon(rect.slice(0,3)),null);
+const concave=[[-80.30,-4.90],[-80.29,-4.90],[-80.29,-4.899],[-80.299,-4.899],[-80.299,-4.891],[-80.29,-4.891],[-80.29,-4.89],[-80.30,-4.89]];
+assert.equal(validatePolygon(concave),null);const c=geometry(concave);assert(contains(concave,[c.reference.lon,c.reference.lat]));
+console.log('13 comprobaciones geométricas aprobadas');

@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {summarize} from './dist/field-profile.js';
+const point={lat:-4.926,lon:-80.344};
+const data={header:{fill_value:-999},geometry:{coordinates:[point.lon,point.lat,85]},parameters:{T2M:{units:'C'}},properties:{parameter:{T2M:{20250101:20,20250102:30,20250103:-999},T2M_MAX:{20250101:33,20250102:32},PRECTOTCORR:{20250101:0,20250102:0,20250103:-999,20250104:0}}}};
+const r=summarize(data,point);
+assert.equal(r.fields[0].value,25);
+assert.equal(r.fields[0].days,2);
+assert.equal(r.fields[2].value,null);
+assert.equal(r.longest_dry_run,2);
+assert.equal(r.hot_days,1);
+assert.equal(r.elevation,85);
+assert.throws(()=>summarize(data,{lat:-12,lon:-77}));
+assert.throws(()=>summarize({},point));
+assert.equal(r.missing.length,11);
+console.log('9 comprobaciones de ficha automática aprobadas');

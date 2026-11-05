@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {inside,search,evaluate,rotations,metrics,demo} from './dist/core.js';
+assert(inside(-4.8,-80.25));
+assert(!inside(-12,-77));
+assert.equal(search('Lima').length,0);
+assert(search('Tambogrande').length);
+assert.equal(search('Fuera',[{name:'Fuera',lat:-12,lon:-77}]).length,0);
+assert.equal(metrics(demo()).n,92);
+assert.equal(metrics([{date:'2025-10-01',temp:20},{date:'2025-10-03',temp:30}]),null);
+const f={moisture:18,days:12,surface:35,crop:'Mango Kent',stage:'floración',rain:12,soil:'franco arenoso',annual:false,water:1,horizon:12,priority:'agua'};
+assert(rotations(f).every(x=>x.reasons.length));
+assert.equal(rotations({...f,annual:true}).filter(x=>!x.reasons.length).length,1);
+assert.equal(evaluate(f).ivap,54);
+console.log('10 comprobaciones aprobadas');

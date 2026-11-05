@@ -1,0 +1,30 @@
+import {setupMenu,closeMenu} from './menu-drawer.js';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const paths={map:'<path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/>',climate:'<circle cx="8" cy="8" r="3"/><path d="M8 1v1M1 8h1M3 3l1 1M13 3l-1 1M5 18a4 4 0 0 1 2-7 5 5 0 0 1 9-1 4 4 0 1 1 2 8H5Z"/>',plan:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4M17 3v4M3 10h18m-13 5 3 3 5-5"/>',share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m9 10 6-4M9 14l6 4"/>',leaf:'<path d="M20 3C8 2 2 8 5 15c3 7 15 6 15-12Z"/><path d="m4 21 11-12"/>',home:'<path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/>',arrow:'<path d="M4 12h16m-6-6 6 6-6 6"/>'};
+export const icon=name=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]||paths.leaf}</svg>`;
+export const sections=[
+ {id:'farm',name:'Mi finca',icon:'map',hint:'Dónde está y qué cultivo',intro:'Empieza por tu terreno. Reúne su ubicación, sus datos y lo que cultivas.',routes:[['territorio','Ubicación','Aquí empieza tu campo.'],['perfil','Ficha de la finca','Conoce lo que sabemos de tu finca.'],['cultivos','Mi cultivo','Cuéntanos qué cultivas.']]},
+ {id:'weather',name:'Agua y clima',icon:'climate',hint:'Entiende las señales',intro:'Explora el árbol, entiende las predicciones y consulta el clima. Todo en un mismo lugar.',routes:[['ia','Explorar mi árbol','Escucha las señales de tu campo.'],['clima','Histórico del clima','Mira cómo cambió el clima.']]},
+ {id:'plan',name:'Mi plan',icon:'plan',hint:'Compara antes de decidir',intro:'Compara alternativas según el agua disponible, el tiempo y tu tipo de cultivo.',routes:[['plan','Comparar opciones','Tu siguiente decisión, más clara.']]},
+ {id:'share',name:'Compartir',icon:'share',hint:'Conecta con tu técnico',intro:'Crea tu semilla visual, conserva registros del suelo y prepara un resumen para tu técnico.',routes:[['suelo','Semilla y suelo','La historia de tu tierra, en una semilla.'],['alertas','Mensaje al técnico','Conversa sobre tu campo.']]}
+];
+export function resolveRoute(id){const route=id==='predict'?'ia':id;const group=sections.find(g=>g.routes.some(r=>r[0]===route))||sections[0];return {group,route:group.routes.find(r=>r[0]===route)||group.routes[0],index:sections.indexOf(group)};}
+const remembered=new Map();
+export function renderNavigation(id,{go,onHome,farmName,hasArea}){
+ const {group,route,index}=resolveRoute(id);remembered.set(group.id,route[0]);
+ const sidebar=document.querySelector('body>aside');sidebar.classList.add('field-sidebar');setupMenu(sidebar);
+ const navigate=id=>{closeMenu();go(id);const title=document.querySelector('#title');title.setAttribute('tabindex','-1');title.focus({preventScroll:true});};
+ sidebar.querySelector('.workspace').innerHTML=`<div class="field-context-icon">${icon('leaf')}</div><div><small>${hasArea?'TU FINCA SELECCIONADA':'ESTÁS EXPLORANDO UN EJEMPLO'}</small><strong>${esc(farmName)}</strong><span>San Lorenzo · Piura</span></div>`;
+ const nav=document.querySelector('#nav');nav.setAttribute('aria-label','Secciones principales');nav.innerHTML=sections.map((g,i)=>`<button type="button" data-group="${g.id}" class="${g.id===group.id?'active':''}" ${g.id===group.id?'aria-current="true"':''}><span class="field-nav-icon">${icon(g.icon)}</span><span class="field-nav-copy"><strong>${g.name}</strong><small>${g.hint}</small></span><span class="field-nav-index">0${i+1}</span></button>`).join('');
+ nav.querySelectorAll('[data-group]').forEach(b=>b.onclick=()=>{const g=sections.find(x=>x.id===b.dataset.group);navigate(remembered.get(g.id)||g.routes[0][0]);});
+ sidebar.querySelector('.sidebottom').innerHTML=`<div class="field-sidebar-note"><span>${icon('leaf')}</span><strong>Tu tierra.<br>Tus decisiones.</strong><p>Un paso a la vez, con información que puedes comprender.</p></div><button type="button" id="fieldBackHome">${icon('home')} Volver al inicio</button><small class="field-pilot">Piloto experimental · verifica en campo</small>`;
+ document.querySelector('#fieldBackHome').onclick=()=>{closeMenu();onHome();};
+ document.querySelector('#breadcrumb').textContent=`${group.name} / ${route[1]}`;
+ document.querySelector('#title').textContent=route[2];document.querySelector('#subtitle').textContent=group.intro;
+ let guide=document.querySelector('#fieldGuide');if(!guide){guide=document.createElement('div');guide.id='fieldGuide';document.querySelector('#content').before(guide);}
+ guide.innerHTML=`${group.routes.length>1?`<nav class="field-subnav" aria-label="Herramientas de ${group.name}">${group.routes.map(r=>`<button type="button" data-route="${r[0]}" ${r[0]===route[0]?'aria-current="page"':''}>${r[1]}</button>`).join('')}</nav>`:''}`;
+ guide.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>navigate(b.dataset.route));
+ let next=document.querySelector('#fieldNext');if(!next){next=document.createElement('div');next.id='fieldNext';document.querySelector('#content').after(next);}
+ const following=sections[(index+1)%sections.length];next.innerHTML=`<div><small>${index===3?'VUELVE CUANDO LO NECESITES':'CUANDO ESTÉS LISTO'}</small><h3>${index===0?'Ahora, comprende las señales.':index===1?'Convierte lo que observaste en opciones.':index===2?'Lleva tu escenario a una conversación.':'Tu finca siempre es el punto de partida.'}</h3><p>Puedes cambiar de sección en cualquier momento.</p></div><button type="button">${following.name} ${icon('arrow')}</button>`;next.querySelector('button').onclick=()=>navigate(following.routes[0][0]);
+ return route[0];
+}
