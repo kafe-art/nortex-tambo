@@ -2,11 +2,134 @@ import {mountRotationStage} from './rotation-stage.js';
 import {summarizePower} from './real-crop-data.js';
 import {crops} from './crop-catalog.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-export function mountDecision(container,farm,context={}){let request=0,controller;
-function home(){request++;controller?.abort();document.body.style.overflow="";container.replaceChildren();context.onHome?.();window.scrollTo({top:0,behavior:"instant"});}
-function menu(){request++;controller?.abort();container.innerHTML='<section class="choice-garden"><button id="decision-home">← Volver al inicio</button><small>TU TIERRA · TU SIGUIENTE DECISIÓN</small><h2>¿Qué quieres descubrir?</h2><p>Dos caminos. Una finca. Tú eliges por dónde comenzar.</p><div class="choice-doors"><button data-mode="current"><span class="choice-art">🌳</span><small>CONOCE TU PRESENTE</small><strong>Qué cultivas</strong><p>Comprende tu cultivo, el agua y las señales de tu finca.</p><b>Entrar a mi campo ↗</b></button><button data-mode="rotations"><span class="choice-art">🌱 → 🌳</span><small>EXPLORA TU FUTURO</small><strong>Rotaciones</strong><p>Ve los cultivos sobre una línea de tiempo y compara caminos.</p><b>Explorar alternativas ↗</b></button></div></section>';container.querySelector('#decision-home').onclick=home;container.querySelectorAll('[data-mode]').forEach(el=>el.onclick=()=>start(el.dataset.mode));}
-async function start(mode){const id=++request;controller=new AbortController();container.innerHTML='<section class="analysis-world" aria-busy="true"><div class="analysis-orbit"><span>✦</span><i>🌱</i></div><small>PREPARANDO TU RECORRIDO</small><h2>Escuchemos a tu tierra.</h2><p role="status">Revisando la ubicación de tu finca…</p><ul></ul><button id="analysis-cancel">Volver al inicio</button></section>';container.querySelector('#analysis-cancel').onclick=home;const live=()=>id===request&&container.isConnected;const note=t=>{if(live()){container.querySelector('[role=status]').textContent=t;const li=document.createElement('li');li.textContent=t;container.querySelector('ul').append(li);}};let local={...context};
-const p=context.area?.reference;
-if(p&&Number.isFinite(p.lat)&&Number.isFinite(p.lon)){note('Consultando el clima histórico de tu ubicación…');try{const q=new URLSearchParams({parameters:'T2M_MAX,PRECTOTCORR',community:'AG',latitude:String(p.lat),longitude:String(p.lon),start:'20250101',end:'20251231',format:'JSON','time-standard':'LST'});const timer=setTimeout(()=>controller.abort(),45000);let response;try{response=await fetch('https://power.larc.nasa.gov/api/temporal/daily/point?'+q,{signal:controller.signal});}finally{clearTimeout(timer)}if(!response.ok)throw Error();const result=summarizePower(await response.json(),2025);local.rows=result.rows;local.source='NASA POWER · histórico 2025';note('Clima histórico recibido. No es un pronóstico de hoy.');}catch{note('No pudimos actualizar el clima. Mostraremos los datos previos y sus límites.');}}else note('Finca sin confirmar: no consultaremos coordenadas de ejemplo.');
-if(!live())return;note('Humedad de las raíces: pendiente de medición en campo.');note('Organizando tus cultivos y alternativas…');if(!live())return;const box=container.querySelector('.analysis-world');box.setAttribute('aria-busy','false');box.insertAdjacentHTML('beforeend','<button class="analysis-ready">'+(mode==='current'?'Ver mi cultivo':'Ver mis alternativas')+' →</button>');container.querySelector('.analysis-ready').onclick=()=>show(mode,local);}
-function show(mode,local){container.replaceChildren();const back=document.createElement('button');back.textContent='← Volver al inicio';back.onclick=home;container.append(back);const host=document.createElement('div');container.append(host);if(mode==='rotations'){mountRotationStage(host,farm,{...local,onBack:home});return;}const c=crops.find(c=>farm.crop?.startsWith(c.name));host.innerHTML='<section class="choice-garden"><small>QUÉ CULTIVAS · TU PRESENTE</small><div class="current-orchard" aria-hidden="true">'+(c?.symbol||'🌳').repeat(5)+'</div><h2>'+esc(farm.crop)+'</h2><p>Cultivo registrado en tu escenario; confirma que coincide con tu finca.</p><div class="current-signals"><article><span>☀</span><h3>El cielo tiene historia</h3><p>'+(local.source?.startsWith('NASA POWER')?'Tenemos registros históricos para explorar. No indican cómo estará la próxima campaña.':'Aún falta consultar clima real para tu finca.')+'</p></article><article><span>💧</span><h3>Las raíces necesitan una visita</h3><p>No tenemos una medición verificada de humedad radicular. Compruébala en campo antes de decidir el riego.</p></article><article><span>🌱</span><h3>Tu cultivo sigue siendo el centro</h3><p>Revisa su etapa, suelo y disponibilidad de agua antes de explorar un cambio.</p></article></div><details><summary>Ver datos y procedencia</summary><p>Fuente: '+esc(local.source||'Sin fuente')+'</p><p>Registros: '+(local.rows?.length||0)+' · Etapa del escenario: '+esc(farm.stage)+'</p><p>Lecturas del escenario, no verificadas: humedad superficial '+esc(farm.moisture)+'%; temperatura superficial '+esc(farm.surface)+' °C.</p></details><button id="current-to-rotation">Explorar alternativas →</button></section>';host.querySelector('#current-to-rotation').onclick=()=>start('rotations');}menu();}
+
+export function mountDecision(container,farm,context={}){
+  let request=0,controller;
+
+  function home(){
+    request++;
+    controller?.abort();
+    document.body.style.overflow='';
+    container.replaceChildren();
+    context.onHome?.();
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+
+  function menu(){
+    request++;
+    controller?.abort();
+    container.innerHTML=`
+      <section class="choice-garden">
+        <button id="decision-home">← Volver al inicio</button>
+        <small>TU TIERRA · TU SIGUIENTE DECISIÓN</small>
+        <h2>¿Qué quieres descubrir?</h2>
+        <p>Dos caminos. Una finca en el Valle de San Lorenzo. Tú eliges por dónde comenzar.</p>
+        <div class="choice-doors">
+          <button data-mode="current">
+            <span class="choice-art">🌳</span>
+            <small>CONOCE TU PRESENTE</small>
+            <strong>Qué cultivas</strong>
+            <p>Comprende tu cultivo actual (${esc(farm.crop)}), el agua en raíces y las señales de tu finca.</p>
+            <b>Entrar a mi campo ↗</b>
+          </button>
+          <button data-mode="rotations">
+            <span class="choice-art">🌱 → 🌳</span>
+            <small>EXPLORA TU FUTURO</small>
+            <strong>Rotaciones</strong>
+            <p>Recorre el camino de cada rotación paso a paso y compara agua, suelo y viabilidad.</p>
+            <b>Explorar rotaciones ↗</b>
+          </button>
+        </div>
+      </section>
+    `;
+    container.querySelector('#decision-home').onclick=home;
+    container.querySelectorAll('[data-mode]').forEach(el=>{
+      el.onclick=()=>show(el.dataset.mode,{...context});
+    });
+  }
+
+  function show(mode,local){
+    const id=++request;
+    controller?.abort();
+    controller=new AbortController();
+    container.replaceChildren();
+
+    const host=document.createElement('div');
+    container.append(host);
+
+    if(mode==='rotations'){
+      mountRotationStage(host,farm,{
+        ...local,
+        onBack:menu,
+        onHome:home
+      });
+      const p=context.area?.reference;
+      if(p&&Number.isFinite(p.lat)&&Number.isFinite(p.lon)&&!local.source?.startsWith('NASA POWER')){
+        const q=new URLSearchParams({
+          parameters:'T2M_MAX,PRECTOTCORR',
+          community:'AG',
+          latitude:String(p.lat),
+          longitude:String(p.lon),
+          start:'20250101',
+          end:'20251231',
+          format:'JSON',
+          'time-standard':'LST'
+        });
+        fetch('https://power.larc.nasa.gov/api/temporal/daily/point?'+q,{signal:controller.signal})
+          .then(r=>r.ok?r.json():Promise.reject())
+          .then(json=>{
+            if(id!==request||!host.isConnected)return;
+            const result=summarizePower(json,2025);
+            local.rows=result.rows;
+            local.source='NASA POWER · histórico 2025';
+            mountRotationStage(host,farm,{...local,onBack:menu,onHome:home});
+          })
+          .catch(()=>{});
+      }
+      return;
+    }
+
+    const c=crops.find(c=>farm.crop?.startsWith(c.name));
+    host.innerHTML=`
+      <section class="choice-garden">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+          <button id="current-back-menu">← Volver a opciones</button>
+          <button id="current-back-home">Ir al mapa inicial</button>
+        </div>
+        <small>QUÉ CULTIVAS · TU PRESENTE</small>
+        <div class="current-orchard" aria-hidden="true">${(c?.symbol||'🌳').repeat(5)}</div>
+        <h2>${esc(farm.crop)}</h2>
+        <p>Cultivo registrado en tu escenario (${esc(farm.name)} · ${esc(farm.area)} ha · suelo ${esc(farm.soil)}).</p>
+        <div class="current-signals">
+          <article>
+            <span>☀</span>
+            <h3>El cielo tiene historia</h3>
+            <p>${local.source?.startsWith('NASA POWER')?'Tenemos registros históricos NASA POWER 2025 cargados para explorar.':'Usando serie de referencia (${esc(local.source)}). Puedes consultar NASA POWER en cualquier momento.'}</p>
+          </article>
+          <article>
+            <span>💧</span>
+            <h3>Las raíces necesitan una visita</h3>
+            <p>Humedad superficial declarada: ${esc(farm.moisture)}% (${esc(farm.days)} días desde el último riego). Compruébala a 30 cm en campo antes de decidir el riego.</p>
+          </article>
+          <article>
+            <span>🌱</span>
+            <h3>Tu cultivo sigue siendo el centro</h3>
+            <p>Etapa actual: ${esc(farm.stage)}. Revisa suelo y disponibilidad de agua antes de explorar rotaciones en tu lote anual o cobertura en calles.</p>
+          </article>
+        </div>
+        <details>
+          <summary>Ver datos y procedencia del escenario</summary>
+          <p>Fuente climática: ${esc(local.source||'Sin fuente')}</p>
+          <p>Registros: ${local.rows?.length||0} días · Etapa fenológica: ${esc(farm.stage)}</p>
+          <p>Lecturas del escenario: humedad superficial ${esc(farm.moisture)}%; temperatura superficial ${esc(farm.surface)} °C; lluvia 7d ${esc(farm.rain)} mm.</p>
+        </details>
+        <button id="current-to-rotation" style="margin-top:18px;background:linear-gradient(#facd68,#efb33e);color:#49300a;border:0;padding:14px 24px;border-radius:99px;font-weight:800">Explorar rotaciones paso a paso →</button>
+      </section>
+    `;
+    host.querySelector('#current-back-menu').onclick=menu;
+    host.querySelector('#current-back-home').onclick=home;
+    host.querySelector('#current-to-rotation').onclick=()=>show('rotations',local);
+  }
+
+  menu();
+}

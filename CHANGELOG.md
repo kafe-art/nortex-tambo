@@ -15,8 +15,7 @@ Los hitos anteriores y sus commits están documentados en docs/PROCESO-Y-ESTADO.
 - Salir de Rotaciones (incluido Escape), regresar desde Qué cultivas y cancelar la consulta llevan al inicio de la web.
 - Se cancela la consulta pendiente, se limpia la vista y se restaura el desplazamiento. Anterior dentro del recorrido conserva su función.
 
-## 2026-11-06 · Adaptación de interfaz aportada
-- Referencia: HTML local aportado por el usuario. Se adoptan paleta bosque/crema/dorado, tarjetas seleccionables, camino con tractor animado, paradas y explicaciones.
-- Se conservan seis cultivos y límites de evidencia; no se copian ganancias, ahorros, parcelas ficticias ni envío WhatsApp del ejemplo.
-- Nueva hoja reference-theme.css y mapa SVG con avance del tractor y movimiento reducido.
-- Pruebas de código y revisión visual se reportan por separado.
+## 2026-11-06 · Adaptación completa de la vista de Rotaciones con datos y catálogo NORTEX
+- Interfaz completa de Rotaciones (`rotation-stage.js`, `decision.js`, `reference-theme.css`) siguiendo las 3 vistas de referencia (cabecera verde oscuro con selectores de parcela/suelo y 3 tarjetas blancas de indicadores reales; tarjetas `Opción A / B / C` y selector de los 6 cultivos del catálogo; mapa de carretera con colinas, canal de riego, tractor animado y 3 paradas numeradas; interruptor `Sin verificar / Con evidencia`; y sección inferior en 2 columnas con detalle de parada, botón `¿Por qué este cultivo aquí?` y 3 barras horizontales con marca oscura de referencia para `Qué cambia en tu parcela`).
+- Todos los datos mostrados provienen exclusivamente del escenario activo (`evaluate(farm)`), el catálogo de 6 cultivos (`Mango`, `Limón`, `Palta`, `Cacao`, `Arándanos`, `Arroz`), el histórico NASA POWER 2025 y las fuentes técnicas (`INIA`, `SENASA`, `ICCO`, `OSU`, `Queensland`, `FAO`), sin ganancias ni ahorros inventados.
+- Verificación: `npm test` en `render-site` aprueba 36 archivos, 53 referencias locales y las 17 pruebas automatizadas.

@@ -1,2 +1,693 @@
-/* Adaptación visual del HTML aportado por el usuario; sin sus cifras ilustrativas. */
-.rotation-theatre{--n-forest:#064e3b;--n-gold:#f4b544;--n-paper:#f3f7ef;background:var(--n-paper);color:#17372b}.rotation-theatre .rotation-heading{background:radial-gradient(ellipse at top right,#147655,#043b2d);padding:32px;border-radius:24px;color:#edf3d8}.rotation-theatre .rotation-heading h2{color:#fff8df}.rotation-theatre .rotation-heading p{color:#dbead7}.rotation-theatre .notice{background:#fff1ce;color:#644821;border:1px solid #e2cb91}.rotation-theatre .crop-journey{background:#f3f7eff5}.rotation-theatre .crop-journey button{background:white;color:#28543b;border:1px solid #cbdcc7}.rotation-theatre .crop-journey button[aria-current]{background:#064e3b;color:white}.rotation-theatre .rotation-paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.rotation-theatre .rotation-paths button{min-width:0;background:white;color:#214232;border:2px solid #d3dfcf;border-radius:20px;box-shadow:0 12px 24px #17492c0c}.rotation-theatre .rotation-paths button[aria-pressed=true]{background:#064e3b;color:white;border-color:#f4b544;box-shadow:0 0 0 4px #efb43f26}.rotation-theatre .rotation-story{background:white;border-color:#e4b549;color:#203e2f}.rotation-theatre .rotation-story h3{color:#174e38}.rotation-theatre .rotation-story p{color:#415a48}.rotation-theatre #crop-data-status{background:white}.rotation-theatre #crop-data-status h3,.rotation-theatre #crop-data-status p{color:#244d36}.rotation-theatre button:not([data-crop]):not([data-stop]):not([data-journey]){border-radius:99px}.rotation-theatre .quest-forward,.rotation-theatre #crop-next,.rotation-theatre #crop-compare{background:linear-gradient(#facd68,#efb33e);color:#49300a;border:0;box-shadow:0 4px 0 #b67a27;padding:13px 22px;font-weight:800}.rotation-theatre .quest-back,.rotation-theatre #crop-close{background:#064e3b;color:white;box-shadow:0 4px 0 #023426}.rotation-theatre button:disabled{opacity:.45;box-shadow:none;cursor:default}.reference-map{background:white;border:1px solid #d1dfcb;box-shadow:0 18px 45px #194f3020}.reference-map .quest-caption{background:#064e3b}.reference-map .quest-caption h3{color:#fff7d9}.reference-map .quest-caption span{color:#f4c45d}.reference-land{position:relative;aspect-ratio:1000/420;background:#d5e8c7;overflow:hidden}.rotation-immersive .reference-land svg,.reference-land svg{display:block;width:100%;height:100%;max-height:none;min-height:0}.reference-stops{position:absolute;inset:0}.reference-stops button{position:absolute;transform:translate(-50%,-50%);background:transparent;border:0;display:flex;align-items:center;flex-direction:column;width:22%;color:#143d2c;padding:0}.reference-stops button>span{display:grid;place-items:center;width:70px;height:70px;border:5px solid #0b6244;background:#fff;border-radius:50%;font-size:38px;transition:transform .25s}.reference-stops button[aria-current=step]>span{border-color:#e9ae32;box-shadow:0 0 0 8px #f4bd4844;transform:scale(1.1)}.reference-stops small{background:#f7d277;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:bold;margin-top:6px}.reference-stops strong{background:white;border-radius:99px;padding:5px 12px;font-size:15px;max-width:100%;overflow-wrap:anywhere}.reference-map .quest-controls{padding:20px;background:#f5f8f0;border-top:1px solid #d5e3cc;color:#325b40}.reference-explanation{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;padding:24px}.reference-map .quest-info{padding:0;min-height:0}.reference-map .quest-info h4,.reference-explanation aside h4{color:#174b34}.reference-map .quest-info p,.reference-explanation aside p{color:#415b48}.reference-explanation aside{background:#edf5e8;border-radius:18px;padding:22px}.reference-simple{background:#fff3d9;border-radius:16px;padding:18px}.reference-map .quest-disclaimer{color:#52654e!important}.ref-cloud{animation:ref-drift 16s ease-in-out infinite alternate}.rotation-theatre #crop-evidence{color:#24492f}.choice-doors button{border-color:#d1dfc5}.choice-doors b{background:#efbd55;color:#4c330b;padding:10px 18px;display:inline-block;border-radius:99px}@keyframes ref-drift{to{transform:translateX(120px)}}@media(max-width:700px){.rotation-theatre .rotation-paths{grid-template-columns:repeat(2,minmax(0,1fr))}.reference-explanation{grid-template-columns:1fr;padding:18px}.reference-stops button>span{width:40px;height:40px;font-size:24px;border-width:3px}.reference-stops strong{font-size:10px;padding:3px 6px}.reference-stops small{font-size:7px;padding:2px 4px}.rotation-theatre .rotation-heading{padding:24px}.reference-map .quest-controls{padding:16px 10px}.reference-map .quest-controls button{padding:10px 13px;font-size:12px}}@media(prefers-reduced-motion:reduce){.ref-cloud{animation:none}.reference-stops button>span{transition:none}}
+/* Estilos del planificador interactivo de rotaciones NORTEX (Valle de San Lorenzo) */
+.nortex-rot-page{
+  --rot-dark:#074635;
+  --rot-darker:#053528;
+  --rot-gold:#f5b02e;
+  --rot-gold-border:#e69d18;
+  --rot-bg:#f4f7f1;
+  --rot-card:#ffffff;
+  --rot-ink:#0f2e24;
+  --rot-muted:#5a6e63;
+  background:var(--rot-bg);
+  border-radius:26px;
+  overflow:hidden;
+  border:1px solid #d7e2d3;
+  box-shadow:0 18px 48px rgba(7,70,53,.09);
+  margin-bottom:36px;
+  position:relative;
+  color:var(--rot-ink);
+}
+
+/* 1. Top Dark-Green Hero Header (Screenshot 1) */
+.nortex-rot-hero{
+  background:linear-gradient(160deg,#084c3a 0%,#05372a 100%);
+  color:#ffffff;
+  padding:clamp(24px,4vw,44px) clamp(22px,4.5vw,56px) clamp(28px,4vw,42px);
+}
+.nortex-rot-topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.nortex-rot-back{
+  background:rgba(255,255,255,.12);
+  color:#edf5ef;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:99px;
+  padding:8px 16px;
+  font-size:12.5px;
+  font-weight:600;
+}
+.nortex-rot-back.ghost{
+  background:transparent;
+}
+.nortex-rot-back:hover{
+  background:rgba(255,255,255,.2);
+}
+.nortex-rot-seedpill{
+  background:rgba(212,233,161,.16);
+  border:1px solid rgba(212,233,161,.35);
+  color:#e4f4b8;
+  padding:6px 14px;
+  border-radius:99px;
+  font-size:12px;
+  font-weight:600;
+}
+.nortex-rot-hero h1{
+  font:800 clamp(30px,4.2vw,52px)/1.06 'Manrope',sans-serif;
+  color:#ffffff;
+  margin:0 0 12px 0;
+  letter-spacing:-1px;
+}
+.nortex-rot-sub{
+  color:#d3e5dc;
+  font-size:clamp(14px,1.5vw,17px);
+  margin:0 0 26px 0;
+  max-width:720px;
+}
+
+.nortex-rot-controls-row{
+  display:grid;
+  grid-template-columns:1.1fr 1.1fr 1.4fr;
+  gap:14px;
+  align-items:end;
+}
+.nortex-rot-field{
+  display:block;
+}
+.nortex-rot-field span{
+  display:block;
+  font-size:12px;
+  font-weight:600;
+  color:#cde0d6;
+  margin-bottom:6px;
+}
+.nortex-rot-field select{
+  width:100%;
+  height:52px;
+  padding:0 16px;
+  border-radius:14px;
+  border:1px solid #d5e0d8;
+  background:#ffffff;
+  color:#0f2e24;
+  font:700 14px 'DM Sans',sans-serif;
+  margin:0;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+}
+
+.nortex-rot-kpis{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.nortex-rot-kpi{
+  background:#ffffff;
+  color:#0f2e24;
+  border-radius:16px;
+  padding:10px 12px;
+  text-align:center;
+  min-height:66px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.1);
+}
+.nortex-rot-kpi strong{
+  font:800 clamp(17px,1.8vw,22px)/1.1 'Manrope',sans-serif;
+  color:#0c3b2e;
+  display:block;
+}
+.nortex-rot-kpi small{
+  font-size:11.5px;
+  color:#5b6e64;
+  margin-top:3px;
+  display:block;
+}
+
+/* 2. Main Body & Option A / B / C Cards */
+.nortex-rot-body{
+  padding:clamp(22px,3.5vw,38px) clamp(18px,4vw,52px) 44px;
+  max-width:1120px;
+  margin:0 auto;
+}
+.nortex-rot-options{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-bottom:24px;
+}
+.nortex-rot-optcard{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  text-align:left;
+  background:#ffffff;
+  color:#0f2e24;
+  border:2px solid #dfe7dc;
+  border-radius:20px;
+  padding:16px 20px;
+  box-shadow:0 8px 22px rgba(15,46,36,.05);
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+}
+.nortex-rot-optcard:hover{
+  transform:translateY(-2px);
+}
+.nortex-rot-optcard .opt-icon{
+  width:46px;
+  height:46px;
+  border-radius:13px;
+  background:linear-gradient(145deg,#fbd064,#f2a922);
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+.nortex-rot-optcard .opt-copy strong{
+  display:block;
+  font:800 17px/1.2 'Manrope',sans-serif;
+  color:inherit;
+}
+.nortex-rot-optcard .opt-copy small{
+  display:block;
+  font-size:12.5px;
+  color:#607368;
+  margin-top:3px;
+}
+.nortex-rot-optcard.active{
+  background:var(--rot-dark);
+  color:#ffffff;
+  border-color:var(--rot-gold);
+  box-shadow:0 0 0 4px rgba(245,176,46,.24),0 14px 30px rgba(7,70,53,.22);
+}
+.nortex-rot-optcard.active .opt-copy small{
+  color:#d5e7de;
+}
+
+/* 2b. 6-Crop Catalog Selector Bar */
+.nortex-rot-catalogbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  background:#ffffff;
+  border:1px solid #dce6d9;
+  border-radius:18px;
+  padding:12px 18px;
+  margin-bottom:22px;
+}
+.nortex-rot-catalogbar .catalogbar-label{
+  font:700 13px 'Manrope',sans-serif;
+  color:#2b473a;
+}
+.nortex-rot-catalogbar .catalogbar-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.nortex-rot-catalogbar .catalog-pill{
+  border-radius:99px;
+  padding:7px 14px;
+  font:700 13px 'DM Sans',sans-serif;
+  background:#f4f7f1;
+  color:#14382b;
+  border:1.5px solid #d5e0d2;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.nortex-rot-catalogbar .catalog-pill.active{
+  background:var(--rot-dark);
+  color:#ffffff;
+  border-color:var(--rot-gold);
+}
+
+/* 3. Interactive Winding Road Map Card (Screenshot 2) */
+.nortex-rot-mapcard{
+  background:#ffffff;
+  border:1px solid #d8e3d5;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 16px 40px rgba(15,46,36,.08);
+  margin-bottom:26px;
+}
+.nortex-rot-maphead{
+  background:var(--rot-dark);
+  color:#ffffff;
+  padding:20px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.nortex-rot-maphead small{
+  display:block;
+  color:#f7c552;
+  font-size:12.5px;
+  font-weight:700;
+  letter-spacing:.3px;
+  margin-bottom:4px;
+}
+.nortex-rot-maphead h2{
+  font:800 clamp(22px,2.8vw,32px)/1.15 'Manrope',sans-serif;
+  color:#ffffff;
+  margin:0;
+}
+
+.nortex-rot-modebox{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:rgba(0,0,0,.24);
+  padding:8px 16px;
+  border-radius:99px;
+  border:1px solid rgba(255,255,255,.12);
+}
+.nortex-rot-modebox .mode-label{
+  font-size:13px;
+  font-weight:600;
+  color:#a8c2b6;
+}
+.nortex-rot-modebox .mode-label.active{
+  color:#ffffff;
+  font-weight:800;
+}
+.nortex-rot-switch{
+  width:54px;
+  height:30px;
+  border-radius:99px;
+  background:#526e61;
+  border:0;
+  padding:3px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  transition:background .22s ease;
+}
+.nortex-rot-switch.is-smart{
+  background:#16b37d;
+}
+.nortex-rot-switch .switch-knob{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:#ffffff;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+  transition:transform .22s ease;
+  transform:translateX(0);
+}
+.nortex-rot-switch.is-smart .switch-knob{
+  transform:translateX(24px);
+}
+
+.nortex-rot-landscape{
+  position:relative;
+  aspect-ratio:1000/390;
+  background:#f4d3a1;
+  overflow:hidden;
+}
+.nortex-rot-svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.nortex-rot-stops{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.nortex-stop-node{
+  pointer-events:auto;
+  position:absolute;
+  transform:translate(-50%,-50%);
+  background:transparent;
+  border:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+.nortex-stop-node .stop-ring{
+  width:84px;
+  height:84px;
+  border-radius:50%;
+  background:#ffffff;
+  border:5px solid var(--rot-dark);
+  display:grid;
+  place-items:center;
+  position:relative;
+  box-shadow:0 10px 24px rgba(0,0,0,.16);
+  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.nortex-stop-node .stop-num{
+  position:absolute;
+  top:-6px;
+  left:-6px;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:var(--rot-gold);
+  color:#2b1b00;
+  font:800 13px/28px 'Manrope',sans-serif;
+  text-align:center;
+  font-style:normal;
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+.nortex-stop-node .stop-label{
+  background:#ffffff;
+  color:var(--rot-dark);
+  border:2px solid var(--rot-dark);
+  border-radius:99px;
+  padding:6px 22px;
+  font:800 15px/1.1 'Manrope',sans-serif;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+  white-space:nowrap;
+}
+.nortex-stop-node.active .stop-ring{
+  border-color:var(--rot-gold);
+  transform:scale(1.08);
+  box-shadow:0 0 0 7px rgba(245,176,46,.3),0 12px 26px rgba(0,0,0,.2);
+}
+.nortex-stop-node.active .stop-label{
+  background:var(--rot-dark);
+  color:#ffffff;
+  border-color:var(--rot-dark);
+}
+
+.nortex-rot-mapfoot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 26px;
+  background:#fbfcfa;
+  border-top:1px solid #e4ece1;
+  gap:12px;
+}
+.nortex-rot-navbtn{
+  border-radius:99px;
+  padding:12px 26px;
+  font:800 14px 'Manrope',sans-serif;
+  border:0;
+}
+.nortex-rot-navbtn.prev{
+  background:#8faaa0;
+  color:#ffffff;
+  box-shadow:0 4px 0 #6e887e;
+}
+.nortex-rot-navbtn.next{
+  background:linear-gradient(180deg,#f9be3b 0%,#e89d18 100%);
+  color:#2e1c00;
+  box-shadow:0 4px 0 #b87708;
+}
+.nortex-rot-navbtn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+.nortex-rot-dots{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.nortex-rot-dots .dots-track{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.nortex-rot-dots .dot{
+  width:10px;
+  height:10px;
+  border-radius:99px;
+  background:#b8c7be;
+  display:inline-block;
+  transition:width .22s ease,background .22s ease;
+}
+.nortex-rot-dots .dot.active{
+  width:26px;
+  background:#ea9c16;
+}
+.nortex-rot-dots .dots-count{
+  font:700 14px 'Manrope',sans-serif;
+  color:#4c6156;
+}
+
+/* 4. Two-Column Detail & Comparison Section (Screenshot 3) */
+.nortex-rot-bottom{
+  display:grid;
+  grid-template-columns:1fr 1.08fr;
+  gap:24px;
+  margin-bottom:24px;
+}
+.nortex-rot-stopcard,
+.nortex-rot-impactcard{
+  background:#ffffff;
+  border:1px solid #dce6d9;
+  border-radius:24px;
+  padding:28px;
+  box-shadow:0 12px 32px rgba(15,46,36,.06);
+}
+.stopcard-head{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:18px;
+}
+.stopcard-icon{
+  width:72px;
+  height:72px;
+  border-radius:18px;
+  background:#fdf3d4;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+.stopcard-eyebrow{
+  display:block;
+  color:#d98218;
+  font:800 12.5px 'DM Sans',sans-serif;
+  margin-bottom:4px;
+}
+.stopcard-head h3{
+  font:800 clamp(20px,2.2vw,26px)/1.15 'Manrope',sans-serif;
+  color:#0f2e24;
+  margin:0;
+}
+.stopcard-question{
+  font-size:15px;
+  line-height:1.6;
+  color:#384d42;
+  margin:0 0 18px 0;
+}
+.stopcard-question strong{
+  color:#0f2e24;
+}
+.stopcard-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:22px;
+}
+.stop-pill{
+  padding:7px 14px;
+  border-radius:99px;
+  font:700 12.5px 'DM Sans',sans-serif;
+}
+.stop-pill.water{
+  background:#e0f2fe;
+  color:#0369a1;
+}
+.stop-pill.soil{
+  background:#dcfce7;
+  color:#15803d;
+}
+.stop-pill.extra{
+  background:#fef3c7;
+  color:#b45309;
+}
+.stopcard-why-btn{
+  background:var(--rot-dark);
+  color:#ffffff;
+  border:0;
+  border-radius:99px;
+  padding:13px 26px;
+  font:800 14.5px 'Manrope',sans-serif;
+  box-shadow:0 4px 0 #03281e;
+}
+.stopcard-why-box{
+  margin-top:16px;
+  background:#f4f8f2;
+  border-left:4px solid var(--rot-dark);
+  border-radius:12px;
+  padding:14px 16px;
+}
+.stopcard-why-box strong{
+  display:block;
+  font-size:13px;
+  color:var(--rot-dark);
+  margin-bottom:6px;
+}
+.stopcard-why-box p{
+  margin:0 0 6px 0;
+  font-size:13px;
+  color:#2e463a;
+}
+.stopcard-why-box .why-meta{
+  font-size:12px;
+  color:#586e62;
+  margin:0;
+}
+
+/* Right Impact Card ("Qué cambia en tu parcela") */
+.nortex-rot-impactcard h3{
+  font:800 clamp(21px,2.3vw,26px)/1.15 'Manrope',sans-serif;
+  color:#0f2e24;
+  margin:0 0 4px 0;
+}
+.impact-sub{
+  font-size:12.5px;
+  color:#64776c;
+  margin:0 0 22px 0;
+}
+.impact-metric{
+  margin-bottom:18px;
+}
+.impact-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:7px;
+}
+.impact-row span{
+  font:700 14.5px 'DM Sans',sans-serif;
+  color:#14362b;
+}
+.impact-row strong{
+  font:800 20px 'Manrope',sans-serif;
+  color:#0f2e24;
+}
+.impact-row strong small{
+  font:500 12.5px 'DM Sans',sans-serif;
+  color:#63766b;
+}
+.impact-track{
+  height:14px;
+  background:#e5ebe4;
+  border-radius:99px;
+  position:relative;
+  overflow:visible;
+  margin-bottom:6px;
+}
+.impact-fill{
+  height:100%;
+  border-radius:99px;
+  transition:width .35s ease;
+}
+.impact-fill.water{
+  background:linear-gradient(90deg,#0284c7 0%,#22d3ee 100%);
+}
+.impact-fill.soil{
+  background:linear-gradient(90deg,#15803d 0%,#84cc16 100%);
+}
+.impact-fill.return{
+  background:linear-gradient(90deg,#d97706 0%,#facc15 100%);
+}
+.impact-marker{
+  position:absolute;
+  top:-3px;
+  bottom:-3px;
+  width:3.5px;
+  background:#0f2e24;
+  border-radius:3px;
+  z-index:2;
+  box-shadow:0 0 0 2px rgba(255,255,255,.75);
+}
+.impact-delta{
+  display:block;
+  font:700 12.5px 'DM Sans',sans-serif;
+}
+.impact-delta.good{
+  color:#0d7a49;
+}
+.impact-delta.warn{
+  color:#9a5b13;
+}
+.impact-disclaimer{
+  font-size:11.5px;
+  color:#6c7e73;
+  margin:14px 0 0 0;
+  padding-top:12px;
+  border-top:1px solid #e6eee4;
+}
+
+/* 5. Extras & Floating WhatsApp Button */
+.nortex-rot-extras{
+  display:grid;
+  gap:12px;
+}
+.nortex-rot-contextbar{
+  background:#eef4ea;
+  border:1px solid #cfe0c8;
+  border-radius:16px;
+  padding:16px 20px;
+  font-size:13.5px;
+  color:#1c4233;
+}
+.nortex-rot-accordion{
+  background:#ffffff;
+  border:1px solid #dce6d9;
+  border-radius:16px;
+  padding:16px 20px;
+}
+.nortex-rot-accordion summary{
+  cursor:pointer;
+  font:700 14.5px 'Manrope',sans-serif;
+  color:#0f2e24;
+}
+
+.nortex-rot-wa-fab{
+  position:sticky;
+  bottom:20px;
+  float:right;
+  margin:0 24px 20px 0;
+  z-index:50;
+  background:linear-gradient(180deg,#1da851 0%,#128c3f 100%);
+  color:#ffffff;
+  border:0;
+  border-radius:99px;
+  padding:14px 26px;
+  font:800 14px 'Manrope',sans-serif;
+  box-shadow:0 10px 26px rgba(18,140,63,.35);
+}
+.nortex-rot-wa-fab:hover{
+  filter:brightness(1.05);
+}
+
+@media(max-width:860px){
+  .nortex-rot-controls-row,
+  .nortex-rot-options,
+  .nortex-rot-bottom{
+    grid-template-columns:1fr;
+  }
+  .nortex-stop-node .stop-ring{
+    width:56px;
+    height:56px;
+    border-width:3.5px;
+  }
+  .nortex-stop-node .stop-ring svg{
+    width:28px;
+    height:28px;
+  }
+  .nortex-stop-node .stop-label{
+    font-size:12px;
+    padding:4px 12px;
+  }
+  .nortex-stop-node .stop-num{
+    width:22px;
+    height:22px;
+    font-size:11px;
+    line-height:22px;
+  }
+}
