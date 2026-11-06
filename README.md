@@ -1,7 +1,7 @@
 # NORTEX-TAMBO · Web independiente
 
 Esta carpeta contiene la web estática completa y una configuración lista para Render.
-El contenido de `dist/` es una copia de la versión 11 publicada en Sites. No necesita Sites para funcionar.
+El proyecto partió de la versión 11 publicada en Sites y ha evolucionado desde entonces. No necesita Sites para funcionar.
 
 ## Publicar
 
@@ -48,3 +48,7 @@ La semilla sigue siendo una representación del escenario, no una credencial par
 Los cambios posteriores realizados en este repositorio se publicarán en Render. No se sincronizan automáticamente con Sites.
 
 Documentación de Render: https://render.com/docs/static-sites
+
+## Documentación del proceso
+
+Consulta [Proceso y estado](docs/PROCESO-Y-ESTADO.md) para entender lo construido, los límites y cómo continuar. Las novedades están en [CHANGELOG.md](CHANGELOG.md).
