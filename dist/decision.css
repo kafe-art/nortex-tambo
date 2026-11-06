@@ -11,3 +11,5 @@
 .assessment{background:#f3f5e6;color:#173e30;padding:20px;border-radius:18px;margin:16px 0}.assessment summary{font-size:20px;font-weight:bold;cursor:pointer}.assessment p{color:#365342}.assessment a{color:#164e63;text-decoration:underline}.assessment-result article{border-left:3px solid #789d61;padding:12px;margin:12px 0}
 
 .rotation-theatre [hidden]{display:none!important}#local-crops{margin:24px 0}#local-crops>h3{color:#e4f1aa;font-size:28px}#local-crops .rotation-compare-grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}#local-crops a{color:#215b45;text-decoration:underline}
+
+.crop-journey{display:flex;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:2;background:#10392e;padding:14px 0}.crop-journey button{flex:1;background:#244f40;color:#eef3d5}.crop-journey button[aria-current]{background:#e1efa1;color:#163e30}#crop-data-status{padding:24px;background:#ffffff0c;border-radius:20px;margin:20px 0}#crop-data-status h3{color:#e4f1aa}#crop-data-status p{color:#e1ebdb}.rotation-theatre .rotation-timeline{display:none}

@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {summarizePower,evaluateReal} from './dist/real-crop-data.js';
+const empty=summarizePower({properties:{parameter:{T2M_MAX:{},PRECTOTCORR:{}}}},2024);
+assert.equal(empty.expected,366);assert.equal(empty.rainTotal,null);
+const missing=summarizePower({properties:{parameter:{T2M_MAX:{20250101:-999},PRECTOTCORR:{20250101:0}}}},2025);assert.equal(missing.tempDays,0);assert.equal(missing.rainDays,1);assert.equal(missing.rainTotal,null);
+assert.equal(evaluateReal(null).length,6);assert(evaluateReal(null).every(c=>c.status==='Datos insuficientes'));
+assert(evaluateReal({year:2025,rainTotal:300}).find(c=>c.name==='Cacao').alerts.length);
+assert(evaluateReal(null,{ph:7}).find(c=>c.name==='Arándanos').alerts.length);
+assert.equal(evaluateReal(null,{ph:7}).find(c=>c.name==='Mango').alerts.length,0);
+console.log('Calidad de datos y aislamiento de reglas: aprobados');
