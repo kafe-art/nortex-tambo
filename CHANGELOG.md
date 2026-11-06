@@ -10,3 +10,7 @@
 - Despliegue: subir a GitHub no certifica estado Live en Render.
 
 Los hitos anteriores y sus commits están documentados en docs/PROCESO-Y-ESTADO.md.
+
+## 2026-11-06 · Regreso al inicio
+- Salir de Rotaciones (incluido Escape), regresar desde Qué cultivas y cancelar la consulta llevan al inicio de la web.
+- Se cancela la consulta pendiente, se limpia la vista y se restaura el desplazamiento. Anterior dentro del recorrido conserva su función.
